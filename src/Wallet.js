@@ -16,12 +16,15 @@ import Reducers from 'gittoken-reducers/dist/index'
 
 import WalletWorker from 'gittoken-web-workers/dist/Wallet.worker.js'
 
+import ledger from 'ledgerco'
+
 export default class GitTokenWallet {
   constructor({
     ethereumProvider,
     torvaldsProvider
   }) {
     this.initStore()
+    this.initLedgerNano()
 
 
     this.walletWorker = new WalletWorker()
@@ -116,6 +119,14 @@ export default class GitTokenWallet {
       })
       resolve()
     })
+  }
+
+  initLedgerNano() {
+    ledger.comm_u2f.create_async().then((comm) => {
+      console.log('comm', comm)
+    }).catch((error) => {
+      console.log('error', error)
+    });
   }
 
 }
